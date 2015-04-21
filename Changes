@@ -1,4 +1,8 @@
 Revision history for perl module Honeydew-Config
 
-0.01
+0.02 2015-04-21
+ - Stop putting values at top level
+ - Choose a standard for feature flag header name
+
+0.01 2015-04-21
  - Initial commit: refactor config module out of main HDEW
