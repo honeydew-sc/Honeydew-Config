@@ -10,7 +10,36 @@ with 'MooX::Singleton';
 
 =head1 SYNOPSIS
 
+In config.ini:
+
+    [passwords]
+    a=b
+    c=d
+
+In App.pm:
+
+    use Honeydew::Config;
+
+    my $config = Honeydew::Config->instance( file => 'config.ini' );
+    print $config->{passwords}->{a}; # 'b'
+
 =head1 DESCRIPTION
+
+A simple config singleton - it will read in a configuration file as
+described by L</file>. There's also the option to use config/feature
+flags & toggles, if your app needs them.
+
+Note that only groups are stored at the top level, and the default
+group is C<"">, an empty string.
+
+=cut
+
+=attr file
+
+Defaults to C</opt/honeydew/honeydew.ini>, but you can point this
+module to any C<ini> file by using this attribute during start
+up. Since this is a singleton, we strongly discourage you from
+changing it after construction.
 
 =cut
 
