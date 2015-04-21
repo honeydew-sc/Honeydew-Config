@@ -6,7 +6,7 @@ use warnings;
 use Moo;
 with 'MooX::Singleton';
 
-=for markdown [![Build Status](https://travis-ci.org/gempesaw/Honeydew-Config.svg?branch=master)](https://travis-ci.org/gempesaw/Honeydew-Config)
+=for markdown [![Build Status](https://travis-ci.org/honeydew-sc/Honeydew-Config.svg?branch=master)](https://travis-ci.org/honeydew-sc/Honeydew-Config)
 
 =head1 SYNOPSIS
 
