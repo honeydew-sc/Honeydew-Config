@@ -33,15 +33,15 @@ sub BUILD {
     my (@file) = <$fh>;
     close ($fh);
 
-    my $group;
+    my $group = "";
     foreach (@file) {
         chomp;
+        # Figure out what group we're in and hold on to it until it's overwritten
         ($group) = ($_ =~ /\[(.*)\]/) if $_ =~ /^\[/;
         next() if $_ =~ /^\s*#/ or $_ !~ /=/;
 
         my ($name, $value) = split(/\s*=\s*/, $_);
         $self->{$group}->{$name} = $value;
-        $self->{$name} = $value;
     }
 }
 
