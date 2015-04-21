@@ -6,7 +6,7 @@ Honeydew::Config - A config singleton for Honeydew
 
 # VERSION
 
-version 0.02
+version 0.03
 
 # SYNOPSIS
 
@@ -61,6 +61,11 @@ following would work:
     $config->is_tester('can', 'here'); # true
 
     $config->is_tester('feature', 'normal-user'); # false
+
+## redis\_addr
+
+A convenience method that concatenates the `redis_server` and
+`redis_port` in the `redis` group.
 
 # BUGS
 

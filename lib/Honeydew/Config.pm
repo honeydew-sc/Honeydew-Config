@@ -105,4 +105,18 @@ sub is_tester {
     return grep { $_ eq $user } @beta_users;
 }
 
+=method redis_addr
+
+A convenience method that concatenates the C<redis_server> and
+C<redis_port> in the C<redis> group.
+
+=cut
+
+sub redis_addr {
+    my ($self) = @_;
+    my ($server, $port) = ($self->{redis}->{redis_server}, $self->{redis}->{redis_port});
+
+    return "$server:$port";
+}
+
 1;
