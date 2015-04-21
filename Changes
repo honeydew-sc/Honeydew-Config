@@ -1,4 +1,4 @@
 Revision history for perl module Honeydew-Config
 
-{{$NEXT}}
- -
+0.01
+ - Initial commit: refactor config module out of main HDEW
