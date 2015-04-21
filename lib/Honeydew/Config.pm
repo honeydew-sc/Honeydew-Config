@@ -45,12 +45,33 @@ sub BUILD {
     }
 }
 
+=method is_tester
+
+One header is treated specially:
+
+    [flags]
+    feature=flags
+    can=go,here
+
+If you'd like to put your config flags in a section with the header
+C<flags>, you can use this function to test whether a user qualifies
+to use the feature described by the flag. With the above setup, the
+following would work:
+
+    $config->is_tester('feature', 'flags'); # true
+    $config->is_tester('can', 'go'); # true
+    $config->is_tester('can', 'here'); # true
+
+    $config->is_tester('feature', 'normal-user'); # false
+
+=cut
+
 sub is_tester {
     my ($self, $flag, $user) = @_;
     $user ||= 'nobody';
 
-    return 1 if $self->{$flag} eq 'all';
-    my @beta_users = split(/\s*,\s*/, $self->{$flag});
+    return 1 if $self->{flags}->{$flag} eq 'all';
+    my @beta_users = split(/\s*,\s*/, $self->{flags}->{$flag});
 
     return grep { $_ eq $user } @beta_users;
 }

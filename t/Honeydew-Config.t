@@ -60,19 +60,15 @@ describe 'Honeydew config' => sub {
         is( $config->{header2}->{key3}, 'value4' );
     };
 
-    it 'should know normal users are not testers' => sub {
-        ok( ! $config->is_tester( 'beta-feature', 'normal user' ) );
+    describe 'flags header' => sub {
+        it 'should know normal users are not testers' => sub {
+            ok( ! $config->is_tester( 'beta-feature', 'normal-user' ) );
+        };
+
+        it 'should allow beta users to be testers' => sub {
+            ok( $config->is_tester( 'beta-feature', 'beta-user') );
+        };
     };
-
-    it 'should allow beta users to be testers' => sub {
-        ok( $config->is_tester( 'beta-feature', 'beta-user') );
-    };
-
-
-
-
-
-
 
 
 };
