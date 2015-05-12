@@ -1,5 +1,8 @@
 Revision history for perl module Honeydew-Config
 
+0.03 2015-05-12
+ - Add convenience method for redis addr
+
 0.02 2015-04-21
  - Stop putting values at top level
  - Choose a standard for feature flag header name
