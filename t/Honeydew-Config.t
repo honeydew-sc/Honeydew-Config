@@ -70,6 +70,20 @@ describe 'Honeydew config' => sub {
         };
     };
 
+    describe 'redis server' => sub {
+        my ($redis_cfg);
+        before each => sub {
+            $redis_cfg = Honeydew::Config->new(
+                file => $fixture_config_file
+            );
+        };
+
+        it 'should get a redis config string out for us' => sub {
+            is( $redis_cfg->redis_addr, 'server:port' );
+        };
+
+    };
+
 
 };
 

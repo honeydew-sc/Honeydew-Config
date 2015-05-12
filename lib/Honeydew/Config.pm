@@ -1,5 +1,5 @@
 package Honeydew::Config;
-$Honeydew::Config::VERSION = '0.02';
+$Honeydew::Config::VERSION = '0.03';
 # ABSTRACT: A config singleton for Honeydew
 use strict;
 use warnings;
@@ -50,6 +50,14 @@ sub is_tester {
     return grep { $_ eq $user } @beta_users;
 }
 
+
+sub redis_addr {
+    my ($self) = @_;
+    my ($server, $port) = ($self->{redis}->{redis_server}, $self->{redis}->{redis_port});
+
+    return "$server:$port";
+}
+
 1;
 
 __END__
@@ -66,7 +74,7 @@ Honeydew::Config - A config singleton for Honeydew
 
 =head1 VERSION
 
-version 0.02
+version 0.03
 
 =head1 SYNOPSIS
 
@@ -121,6 +129,11 @@ following would work:
     $config->is_tester('can', 'here'); # true
 
     $config->is_tester('feature', 'normal-user'); # false
+
+=head2 redis_addr
+
+A convenience method that concatenates the C<redis_server> and
+C<redis_port> in the C<redis> group.
 
 =head1 BUGS
 
