@@ -4,6 +4,8 @@ package Honeydew::Config;
 use strict;
 use warnings;
 use Moo;
+use File::Spec;
+
 with 'MooX::Singleton';
 
 =for markdown [![Build Status](https://travis-ci.org/honeydew-sc/Honeydew-Config.svg?branch=master)](https://travis-ci.org/honeydew-sc/Honeydew-Config)
@@ -72,6 +74,50 @@ sub BUILD {
         my ($name, $value) = split(/\s*=\s*/, $_);
         $self->{$group}->{$name} = $value;
     }
+}
+
+=method features_dir
+
+=method sets_dir
+
+=method phrases_dir
+
+Specify where the Honeydew features/sets/phrases are located. This
+uses C<$config->{honeydew}->{basedir}> and appends the appropriate
+directory name to it. In your inifile, you might do
+
+    [honeydew]
+    basedir=/opt/honeydew
+
+And that would result in a C<sets_dir> of C</opt/honeydew/sets>, and
+analogous directories for features and phrases.
+
+=cut
+
+sub phrases_dir {
+    my ($self) = @_;
+
+    return $self->honeydew_dir( 'phrases' );
+}
+
+sub features_dir {
+    my ($self) = @_;
+
+    return $self->honeydew_dir( 'features' );
+}
+
+sub sets_dir {
+    my ($self) = @_;
+
+    return $self->honeydew_dir( 'sets' );
+}
+
+sub honeydew_dir {
+    my ($self, $dir) = @_;
+
+    my $basedir = $self->{honeydew}->{basedir};
+
+    return File::Spec->catfile( $basedir, $dir );
 }
 
 =method is_tester

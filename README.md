@@ -6,7 +6,7 @@ Honeydew::Config - A config singleton for Honeydew
 
 # VERSION
 
-version 0.03
+version 0.04
 
 # SYNOPSIS
 
@@ -42,6 +42,22 @@ up. Since this is a singleton, we strongly discourage you from
 changing it after construction.
 
 # METHODS
+
+## features\_dir
+
+## sets\_dir
+
+## phrases\_dir
+
+Specify where the Honeydew features/sets/phrases are located. This
+uses `$config-`{honeydew}->{basedir}> and appends the appropriate
+directory name to it. In your inifile, you might do
+
+    [honeydew]
+    basedir=/opt/honeydew
+
+And that would result in a `sets_dir` of `/opt/honeydew/sets`, and
+analogous directories for features and phrases.
 
 ## is\_tester
 
