@@ -5,19 +5,19 @@ author:
 build_requires:
   Cwd: '0'
   File::Basename: '0'
-  File::Spec: '0'
   Test::Fatal: '0'
   Test::Spec: '0'
 configure_requires:
   ExtUtils::MakeMaker: '0'
 dynamic_config: 0
-generated_by: 'Dist::Zilla version 5.031, CPAN::Meta::Converter version 2.143240'
+generated_by: 'Dist::Zilla version 5.036, CPAN::Meta::Converter version 2.143240'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
   version: '1.4'
 name: Honeydew-Config
 requires:
+  File::Spec: '0'
   Moo: '0'
   MooX::Singleton: '0'
   strict: '0'
@@ -26,4 +26,4 @@ resources:
   bugtracker: https://github.com/honeydew-sc/Honeydew-Config/issues
   homepage: https://github.com/honeydew-sc/Honeydew-Config
   repository: https://github.com/honeydew-sc/Honeydew-Config.git
-version: '0.03'
+version: '0.04'

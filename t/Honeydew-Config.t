@@ -60,6 +60,18 @@ describe 'Honeydew config' => sub {
         is( $config->{header2}->{key3}, 'value4' );
     };
 
+    describe 'directories' => sub {
+        my @dirs = qw/sets features phrases/;
+
+        foreach my $dir (@dirs) {
+            it 'should figure out the ' . $dir . ' directory' => sub {
+                my $method = $dir . '_dir';
+                my $found_dir = $config->$method;
+                is( $found_dir, File::Spec->catfile('/tmp/', $dir) );
+            };
+        }
+    };
+
     describe 'flags header' => sub {
         it 'should know normal users are not testers' => sub {
             ok( ! $config->is_tester( 'beta-feature', 'normal-user' ) );

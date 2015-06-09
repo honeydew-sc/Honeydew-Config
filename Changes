@@ -1,5 +1,8 @@
 Revision history for perl module Honeydew-Config
 
+0.04 2015-06-09
+ - Add convenience method for sets, features, and phrases directories
+
 0.03 2015-05-12
  - Add convenience method for redis addr
 

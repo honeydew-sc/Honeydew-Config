@@ -1,9 +1,11 @@
 package Honeydew::Config;
-$Honeydew::Config::VERSION = '0.03';
+$Honeydew::Config::VERSION = '0.04';
 # ABSTRACT: A config singleton for Honeydew
 use strict;
 use warnings;
 use Moo;
+use File::Spec;
+
 with 'MooX::Singleton';
 
 
@@ -37,6 +39,33 @@ sub BUILD {
         my ($name, $value) = split(/\s*=\s*/, $_);
         $self->{$group}->{$name} = $value;
     }
+}
+
+
+sub phrases_dir {
+    my ($self) = @_;
+
+    return $self->honeydew_dir( 'phrases' );
+}
+
+sub features_dir {
+    my ($self) = @_;
+
+    return $self->honeydew_dir( 'features' );
+}
+
+sub sets_dir {
+    my ($self) = @_;
+
+    return $self->honeydew_dir( 'sets' );
+}
+
+sub honeydew_dir {
+    my ($self, $dir) = @_;
+
+    my $basedir = $self->{honeydew}->{basedir};
+
+    return File::Spec->catfile( $basedir, $dir );
 }
 
 
@@ -74,7 +103,7 @@ Honeydew::Config - A config singleton for Honeydew
 
 =head1 VERSION
 
-version 0.03
+version 0.04
 
 =head1 SYNOPSIS
 
@@ -110,6 +139,22 @@ up. Since this is a singleton, we strongly discourage you from
 changing it after construction.
 
 =head1 METHODS
+
+=head2 features_dir
+
+=head2 sets_dir
+
+=head2 phrases_dir
+
+Specify where the Honeydew features/sets/phrases are located. This
+uses C<$config->{honeydew}->{basedir}> and appends the appropriate
+directory name to it. In your inifile, you might do
+
+    [honeydew]
+    basedir=/opt/honeydew
+
+And that would result in a C<sets_dir> of C</opt/honeydew/sets>, and
+analogous directories for features and phrases.
 
 =head2 is_tester
 
