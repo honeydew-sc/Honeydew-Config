@@ -1,5 +1,8 @@
 Revision history for perl module Honeydew-Config
 
+0.05 2015-07-08
+ - Add method for composing dsn, since we need it all over the place
+
 0.04 2015-06-09
  - Add convenience method for sets, features, and phrases directories
 
