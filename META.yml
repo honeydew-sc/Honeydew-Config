@@ -26,4 +26,4 @@ resources:
   bugtracker: https://github.com/honeydew-sc/Honeydew-Config/issues
   homepage: https://github.com/honeydew-sc/Honeydew-Config
   repository: https://github.com/honeydew-sc/Honeydew-Config.git
-version: '0.04'
+version: '0.05'

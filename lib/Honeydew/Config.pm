@@ -1,5 +1,5 @@
 package Honeydew::Config;
-$Honeydew::Config::VERSION = '0.04';
+$Honeydew::Config::VERSION = '0.05';
 # ABSTRACT: A config singleton for Honeydew
 use strict;
 use warnings;
@@ -87,6 +87,22 @@ sub redis_addr {
     return "$server:$port";
 }
 
+
+sub mysql_dsn {
+    my ($self) = @_;
+
+    my ($db_settings) = $self->{mysql};
+
+    my @dsn = (
+        "DBI:mysql:database=" . $db_settings->{database} . ";host=" . $db_settings->{host},
+        $db_settings->{username},
+        $db_settings->{password},
+        { RaiseError => 1 }
+    );
+
+    return @dsn;
+}
+
 1;
 
 __END__
@@ -103,7 +119,7 @@ Honeydew::Config - A config singleton for Honeydew
 
 =head1 VERSION
 
-version 0.04
+version 0.05
 
 =head1 SYNOPSIS
 
@@ -179,6 +195,32 @@ following would work:
 
 A convenience method that concatenates the C<redis_server> and
 C<redis_port> in the C<redis> group.
+
+=head2 mysql_dsn
+
+A convenience method for constructing the dsn for a MySQL database
+connection. It uses the following values from the C<[mysql]> section
+of the config file to construct the dsn.
+
+    [mysql]
+    host=host_address
+    database=database
+    username=username
+    password=password
+
+would create a dsn like
+
+    (
+        'DBI:mysql:database=database;host=host',
+        'username',
+        'password',
+        { RaiseError => 1 }
+    )
+
+Usage looks like:
+
+    my $config = Honeydew::Config->instance;
+    my $dbh = DBI->connect( $config->dsn );
 
 =head1 BUGS
 
