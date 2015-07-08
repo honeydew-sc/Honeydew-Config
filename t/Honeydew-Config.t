@@ -96,6 +96,32 @@ describe 'Honeydew config' => sub {
 
     };
 
+    describe 'mysql dsn' => sub {
+        my ($cfg);
+        before each => sub {
+            $cfg = Honeydew::Config->new(
+                file => $fixture_config_file
+            );
+        };
+
+        it 'should construct a proper DSN for us' => sub {
+            my @expected_dsn = (
+                'DBI:mysql:database=database;host=host',
+                'username',
+                'password',
+                { RaiseError => 1 }
+            );
+
+            is_deeply( [ $cfg->mysql_dsn ], \@expected_dsn );
+        };
+
+        # comment this out so it doesn't impact prereqs.
+        # xit 'should create a valid dsn for DBI to use' => sub {
+        #     require DBI;
+        #     my $exception = exception { my $dbh = DBI->connect( $cfg->mysql_dsn ) };
+        #     like( $exception, qr/Unknown MySQL server host 'host'/ );
+        # };
+    };
 
 };
 

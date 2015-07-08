@@ -6,7 +6,7 @@ Honeydew::Config - A config singleton for Honeydew
 
 # VERSION
 
-version 0.04
+version 0.05
 
 # SYNOPSIS
 
@@ -82,6 +82,32 @@ following would work:
 
 A convenience method that concatenates the `redis_server` and
 `redis_port` in the `redis` group.
+
+## mysql\_dsn
+
+A convenience method for constructing the dsn for a MySQL database
+connection. It uses the following values from the `[mysql]` section
+of the config file to construct the dsn.
+
+    [mysql]
+    host=host_address
+    database=database
+    username=username
+    password=password
+
+would create a dsn like
+
+    (
+        'DBI:mysql:database=database;host=host',
+        'username',
+        'password',
+        { RaiseError => 1 }
+    )
+
+Usage looks like:
+
+    my $config = Honeydew::Config->instance;
+    my $dbh = DBI->connect( $config->dsn );
 
 # BUGS
 
