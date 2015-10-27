@@ -1,5 +1,8 @@
 Revision history for perl module Honeydew-Config
 
+0.06 2015-10-27
+ - Use default configs when user doesn't specify file
+
 0.05 2015-07-08
  - Add method for composing dsn, since we need it all over the place
 
