@@ -6,7 +6,7 @@ Honeydew::Config - A config singleton for Honeydew
 
 # VERSION
 
-version 0.05
+version 0.06
 
 # SYNOPSIS
 
@@ -30,7 +30,71 @@ described by ["file"](#file). There's also the option to use config/feature
 flags & toggles, if your app needs them.
 
 Note that only groups are stored at the top level, and the default
-group is `""`, an empty string.
+group is `""`, an empty string. If no file is provided during the
+initial call to `instance`, you'll get the following default
+configurations:
+
+    # Add perl libraries to include when running Honeydew, in case it's
+    # installed in a non-standard location
+    [perl]
+    libs=-I/home/honeydew/perl5/lib/perl5
+
+    # Describe the directory configuration for the server
+    [honeydew]
+    basedir=/opt/honeydew/
+    screenshotsdir=/tmp
+
+    # Configure the MySQL report database parameters
+    [mysql]
+    host=127.0.0.1
+    database=test
+    username=root
+    password=password
+
+    # Tell Honeydew where to find the proxy
+    [proxy]
+    proxy_server_addr=127.0.0.1
+    proxy_server_port=8080
+
+    # Tell Honeydew where to find Redis
+    [redis]
+    redis_server=127.0.0.1
+    redis_port=6379
+    redis_background_channel=no_channel
+
+    # Which users jobs to should be sent to redis
+    [flags]
+    redis=all
+
+This will be represented in memory like
+
+    my $config = {
+        perl => {
+            libs => '-I/home/honeydew/perl5/lib/perl'
+        },
+        honeydew => {
+            basedir => '/opt/honeydew',
+            screenshotsdir => '/tmp'
+        },
+        mysql => {
+            host => '127.0.0.1',
+            database => 'test',
+            username => 'root',
+            password => 'password'
+        },
+        proxy => {
+            proxy_server_addr => '127.0.0.1',
+            proxy_server_port => '8080'
+        },
+        redis => {
+            redis_server => '127.0.0.1',
+            redis_port => '6379',
+            redis_background_channel => 'no_channel'
+        },
+        flags => {
+            redis => 'all'
+        }
+    };
 
 # ATTRIBUTES
 

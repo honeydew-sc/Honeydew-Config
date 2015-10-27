@@ -60,6 +60,17 @@ describe 'Honeydew config' => sub {
         is( $config->{header2}->{key3}, 'value4' );
     };
 
+    describe 'no-file construction' => sub {
+        my @default_keys = qw/perl honeydew mysql proxy redis flags/;
+
+        foreach my $key (@default_keys) {
+            it 'should use default ' . $key . ' config' => sub {
+                my $config = Honeydew::Config->new;
+                ok(exists $config->{$key} && ref($config->{$key}) eq 'HASH');
+            };
+        }
+    };
+
     describe 'directories' => sub {
         my @dirs = qw/sets features phrases/;
 

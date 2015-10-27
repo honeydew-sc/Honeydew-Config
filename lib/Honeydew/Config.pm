@@ -32,7 +32,71 @@ described by L</file>. There's also the option to use config/feature
 flags & toggles, if your app needs them.
 
 Note that only groups are stored at the top level, and the default
-group is C<"">, an empty string.
+group is C<"">, an empty string. If no file is provided during the
+initial call to C<instance>, you'll get the following default
+configurations:
+
+    # Add perl libraries to include when running Honeydew, in case it's
+    # installed in a non-standard location
+    [perl]
+    libs=-I/home/honeydew/perl5/lib/perl5
+
+    # Describe the directory configuration for the server
+    [honeydew]
+    basedir=/opt/honeydew/
+    screenshotsdir=/tmp
+
+    # Configure the MySQL report database parameters
+    [mysql]
+    host=127.0.0.1
+    database=test
+    username=root
+    password=password
+
+    # Tell Honeydew where to find the proxy
+    [proxy]
+    proxy_server_addr=127.0.0.1
+    proxy_server_port=8080
+
+    # Tell Honeydew where to find Redis
+    [redis]
+    redis_server=127.0.0.1
+    redis_port=6379
+    redis_background_channel=no_channel
+
+    # Which users jobs to should be sent to redis
+    [flags]
+    redis=all
+
+This will be represented in memory like
+
+    my $config = {
+        perl => {
+            libs => '-I/home/honeydew/perl5/lib/perl'
+        },
+        honeydew => {
+            basedir => '/opt/honeydew',
+            screenshotsdir => '/tmp'
+        },
+        mysql => {
+            host => '127.0.0.1',
+            database => 'test',
+            username => 'root',
+            password => 'password'
+        },
+        proxy => {
+            proxy_server_addr => '127.0.0.1',
+            proxy_server_port => '8080'
+        },
+        redis => {
+            redis_server => '127.0.0.1',
+            redis_port => '6379',
+            redis_background_channel => 'no_channel'
+        },
+        flags => {
+            redis => 'all'
+        }
+    };
 
 =cut
 
@@ -47,8 +111,9 @@ changing it after construction.
 
 has 'file' => (
     is => 'ro',
-    required => 1,
-    default => '/opt/honeydew/honeydew.ini'
+    lazy => 1,
+    predicate => 1,
+    default => sub { '/opt/honeydew/honeydew.ini' }
 );
 
 has 'channel' => (
@@ -58,7 +123,18 @@ has 'channel' => (
 );
 
 sub BUILD {
-    my $self = shift;
+    my ($self) = @_;
+
+    if ($self->has_file) {
+        $self->_init_from_file;
+    }
+    else {
+        $self->_init_default_cfg;
+    }
+}
+
+sub _init_from_file {
+    my ($self) = @_;
 
     open (my $fh, '<', $self->file) or die 'There\'s no config file at \'' . $self->file . '\'. Put one there, or tell me where to find it!';
     my (@file) = <$fh>;
@@ -73,6 +149,41 @@ sub BUILD {
 
         my ($name, $value) = split(/\s*=\s*/, $_);
         $self->{$group}->{$name} = $value;
+    }
+}
+
+sub _init_default_cfg {
+    my ($self) = @_;
+    my %default = (
+        perl => {
+            libs => '-I/home/honeydew/perl5/lib/perl'
+        },
+        honeydew => {
+            basedir => '/opt/honeydew',
+            screenshotsdir => '/tmp'
+        },
+        mysql => {
+            host => '127.0.0.1',
+            database => 'test',
+            username => 'root',
+            password => 'password'
+        },
+        proxy => {
+            proxy_server_addr => '127.0.0.1',
+            proxy_server_port => '8080'
+        },
+        redis => {
+            redis_server => '127.0.0.1',
+            redis_port => '6379',
+            redis_background_channel => 'no_channel'
+        },
+        flags => {
+            redis => 'all'
+        }
+    );
+
+    foreach (keys %default) {
+        $self->{$_} = $default{$_};
     }
 }
 
