@@ -6,6 +6,7 @@ use warnings;
 use Moo;
 use File::Spec;
 
+$Honeydew::Config::VERSION = '0.20';
 with 'MooX::Singleton';
 
 =for markdown [![Build Status](https://travis-ci.org/honeydew-sc/Honeydew-Config.svg?branch=master)](https://travis-ci.org/honeydew-sc/Honeydew-Config)
@@ -33,8 +34,9 @@ flags & toggles, if your app needs them.
 
 Note that only groups are stored at the top level, and the default
 group is C<"">, an empty string. If no file is provided during the
-initial call to C<instance>, you'll get the following default
-configurations:
+initial call to C<instance>, we'll try to initialize from
+C</opt/honeydew/honeydew.ini> if the file exists; otherwise, you'll
+get the following default configurations:
 
     # Add perl libraries to include when running Honeydew, in case it's
     # installed in a non-standard location
@@ -98,6 +100,12 @@ This will be represented in memory like
         }
     };
 
+such that the following is true, assuming that
+/opt/honeydew/honeydew.ini does not exist:
+
+    my $config = Honeydew::Config->instance;
+    is($config->{flags}->{redis}, 'all');
+
 =cut
 
 =attr file
@@ -105,7 +113,13 @@ This will be represented in memory like
 Defaults to C</opt/honeydew/honeydew.ini>, but you can point this
 module to any C<ini> file by using this attribute during start
 up. Since this is a singleton, we strongly discourage you from
-changing it after construction.
+changing it after construction for the sake of not confusing yourself,
+and additionally because nothing will happen to the config data in
+memory.
+
+If no file is specified, we will still try to load from the default
+file at C</opt/honeydew/honeydew.ini> if it exists before falling back
+to the default configuration data as specified in the L</DESCRIPTION>.
 
 =cut
 
@@ -125,7 +139,7 @@ has 'channel' => (
 sub BUILD {
     my ($self) = @_;
 
-    if ($self->has_file) {
+    if ($self->has_file || -e $self->file) {
         $self->_init_from_file;
     }
     else {
@@ -154,6 +168,7 @@ sub _init_from_file {
 
 sub _init_default_cfg {
     my ($self) = @_;
+
     my %default = (
         perl => {
             libs => '-I/home/honeydew/perl5/lib/perl'

@@ -6,7 +6,7 @@ Honeydew::Config - A config singleton for Honeydew
 
 # VERSION
 
-version 0.06
+version 0.07
 
 # SYNOPSIS
 
@@ -31,8 +31,9 @@ flags & toggles, if your app needs them.
 
 Note that only groups are stored at the top level, and the default
 group is `""`, an empty string. If no file is provided during the
-initial call to `instance`, you'll get the following default
-configurations:
+initial call to `instance`, we'll try to initialize from
+`/opt/honeydew/honeydew.ini` if the file exists; otherwise, you'll
+get the following default configurations:
 
     # Add perl libraries to include when running Honeydew, in case it's
     # installed in a non-standard location
@@ -96,6 +97,12 @@ This will be represented in memory like
         }
     };
 
+such that the following is true, assuming that
+/opt/honeydew/honeydew.ini does not exist:
+
+    my $config = Honeydew::Config->instance;
+    is($config->{flags}->{redis}, 'all');
+
 # ATTRIBUTES
 
 ## file
@@ -103,7 +110,13 @@ This will be represented in memory like
 Defaults to `/opt/honeydew/honeydew.ini`, but you can point this
 module to any `ini` file by using this attribute during start
 up. Since this is a singleton, we strongly discourage you from
-changing it after construction.
+changing it after construction for the sake of not confusing yourself,
+and additionally because nothing will happen to the config data in
+memory.
+
+If no file is specified, we will still try to load from the default
+file at `/opt/honeydew/honeydew.ini` if it exists before falling back
+to the default configuration data as specified in the ["DESCRIPTION"](#description).
 
 # METHODS
 
