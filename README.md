@@ -6,7 +6,7 @@ Honeydew::Config - A config singleton for Honeydew
 
 # VERSION
 
-version 0.07
+version 0.08
 
 # SYNOPSIS
 
@@ -185,6 +185,28 @@ Usage looks like:
 
     my $config = Honeydew::Config->instance;
     my $dbh = DBI->connect( $config->dsn );
+
+## choose\_gmail\_account
+
+Returns the username and password for the email account that you pass
+in, already in the proper format for use as the arguments in the
+constructor to ["new" in Honeydew::CheckGmail](https://metacpan.org/pod/Honeydew::CheckGmail#new).
+
+For the following config entry,
+
+    [gmail]
+    account=user:pass
+    account2=user2:pass2
+    account3=user3:pass3
+
+this subroutine would satisfy the following:
+
+    # default behavior is to return the creds from the "account" key
+    my $default = $config->choose_account;
+    is($default, { user => 'user', password => 'pass' };
+
+    my $b_account = $config->choose_account('user2');
+    is($b_account, { user => 'user2', password => 'pass2' };
 
 # BUGS
 

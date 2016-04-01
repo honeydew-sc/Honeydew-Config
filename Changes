@@ -1,5 +1,8 @@
 Revision history for perl module Honeydew-Config
 
+0.08 2016-04-01
+ - Allow for selection of multiple email accounts
+
 0.07 2015-11-02
  - Make default config decision logic smarter
 
