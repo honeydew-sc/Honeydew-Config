@@ -134,6 +134,31 @@ describe 'Honeydew config' => sub {
         # };
     };
 
+    describe 'gmail acc selection' => sub {
+        my ($cfg);
+        before each => sub {
+            $cfg = Honeydew::Config->new(
+                file => $fixture_config_file
+            );
+        };
+
+        it 'should choose the default account' => sub {
+            my $default = $cfg->choose_gmail_account;
+            is_deeply($default, { user => 'user', password => 'pass' });
+        };
+
+        it 'should choose the default account when the email is not found' => sub {
+            my $missing = $cfg->choose_gmail_account('missing');
+            is_deeply($missing, { user => 'user', password => 'pass' });
+        };
+
+
+        it 'should choose a different account' => sub {
+            my $chosen_account = $cfg->choose_gmail_account('user2');
+            is_deeply($chosen_account, { user => 'user2', password => 'pass2' });
+        };
+    };
+
 };
 
 runtests;
