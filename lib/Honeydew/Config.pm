@@ -6,7 +6,6 @@ use warnings;
 use Moo;
 use File::Spec;
 
-$Honeydew::Config::VERSION = '0.20';
 with 'MooX::Singleton';
 
 =for markdown [![Build Status](https://travis-ci.org/honeydew-sc/Honeydew-Config.svg?branch=master)](https://travis-ci.org/honeydew-sc/Honeydew-Config)
